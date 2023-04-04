@@ -42,7 +42,26 @@ class AverageYear:
         self.Reader = Reader(file)
 
     def calculate_average_year(self):
-        pass
+        dic = {}
+        for x in self.Reader.get_line():
+            for key, value in x.items():
+                if key == 'Year':
+                    if key not in dic:
+                        dic[key] = [int(value)]
+                    else:    
+                        dic[key].append(int(value))
+                if key in ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']:
+                    if "months" not in dic:
+                        print(key)
+                        dic["months"] = [float(value)]
+                    else:
+                        dic["months"].append(float(value))
+        #calculate averages
+        for key, value in dic.items():
+            if key == 'Year':
+                continue
+            dic[key] = sum(value)/ len(value)            
+        return dic                
     
 class AverageMonth:
     def __init__(self, file):
@@ -57,6 +76,7 @@ class AverageMonth:
                     if key not in dic:
                         dic[key] = [float(value)]
                     dic[key].append(float(value))
+        
         #calculate averages
         for key, value in dic.items():
             if key == 'Year':
@@ -69,14 +89,33 @@ class AverageMonth:
         y = [item for item in month_averages.values()]
         label = f'{int(y[0][0])} - {int(y[0][-1])}'
         data = y[1:]
-        plt.plot(x,data, label=label)
+       
+        # plt.legend(loc="upper left")
+        return  [x,data, label]
+       
+
+
+test =   AverageYear('data/dSST.csv')
+"""
+def main():
+    start = input("Enter yes or no to continue:")
+ 
+    while start != 'no':
+        print(start)
+        toplot = test.average_month_plot(test.calculate_average_month())
+        plt.plot(toplot[0], toplot[1], label=toplot[2])
         plt.legend(loc="upper left")
-        plt.show()
-        print(label, data)
+        start = ''
+        # plt.show()
+        main()
+    plt.show()    
+    return "im done"
+main()
+"""
+print(test.calculate_average_year())
+# plt.show()
 
 
-test =   AverageMonth('data/dSST.csv')
-test.average_month_plot(test.calculate_average_month())
 # test.calculate_average_month()
 # test = Reader('data/dSST.csv')
 
