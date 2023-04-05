@@ -54,12 +54,11 @@ class AverageYear:
         self.data = []
         self.years = []
         self.averages = []
-        self.times = 0
-        self.five_years = 0
 
     def calculate_average_year(self):
         dic = {}
         for x in self.data:
+            
             for key, value in x.items():
                 if key == 'Year':
                     if key not in dic:
@@ -73,26 +72,20 @@ class AverageYear:
                     else:
                         dic["months"].append(float(value))
         #calculate averages
-  
         for key, value in dic.items():
             if key == 'Year':
                 continue
-            dic[key] = sum(value[self.five_years:])/ len(value[self.five_years:])    
-        self.five_years +=60             
+            dic[key] = sum(value)/ len(value)            
         return dic                
     
     def average_year_data(self, year_averages):
-        
-        first_year = year_averages['Year'][self.times]
-        
+        first_year = year_averages['Year'][0]
         last_year = year_averages['Year'][-1]
         x_value = f'{first_year} - {last_year}'
         
         data = year_averages['months']
-        
         self.years.append(x_value)
         self.averages.append(data)
-        self.times += 5
 
     def plot_year(self):
         plt.plot(self.years, self.averages)
@@ -108,20 +101,13 @@ class AverageMonth:
     def __init__(self):
         self.data = []
         self.plot_data = []
-        self.times = 0
-
 
     def calculate_average_month(self):
         dic = {}
 
         for x in self.data:
             for key,value in x.items():
-                if key == 'Year':
-                    if key not in dic:
-                        dic[key] = [int(value)]
-                    else:    
-                        dic[key].append(int(value))
-                if key in ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']:
+                if key in ['Year', 'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']:
                     if key not in dic:
                         dic[key] = [float(value)]
                     dic[key].append(float(value))
@@ -130,23 +116,18 @@ class AverageMonth:
         for key, value in dic.items():
             if key == 'Year':
                 continue
-            dic[key] = sum(value)/ len(value)     
-          
-        print(dic)
+            dic[key] = sum(value)/ len(value)            
         return dic
 
     def average_month_plot(self, month_averages):
         x = [keys for keys in month_averages.keys()][1:]
         y = [item for item in month_averages.values()]
-
-        label = f'{int(y[0][self.times])} - {int(y[0][-1])}'
+        label = f'{int(y[0][0])} - {int(y[0][-1])}'
         data = y[1:]
-
-        self.times += 5
+       
         self.plot_data.append([x, data, label])
-    
+        
     def plot_months(self):
-
         for x in self.plot_data:
             plt.plot(x[0], x[1], label=x[2])
         plt.legend(loc='upper left')    
