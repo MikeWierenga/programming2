@@ -24,28 +24,39 @@ class CsvConverter:
 class Reader:
     def __init__(self, file):
         self.file = file
+        self.obs = []
+        self.lines = []
         self.CsvConverter = CsvConverter(file)
         self.read_line_number = 2
 
-
     def get_line(self):
-        lines = []
         for line in range(5):
-            lines.append(self.CsvConverter.csv_to_json(line+self.read_line_number))
+            self.lines.append(self.CsvConverter.csv_to_json(line+self.read_line_number))
 
         self.read_line_number +=5       
-        return lines
+        self.notify_observers()
 
+    def add_observer(self, observer):
+        self.obs.append(observer)
 
+    def remove_observer(self, observer):
+        pass
+
+    def notify_observers(self):
+        for observer in self.obs:
+            observer.update(self)
+
+    
+
+        
 class AverageYear:
-    def __init__(self, file):
-        self.Reader = Reader(file)
+    def __init__(self):
         self.years = []
         self.averages = []
 
-    def calculate_average_year(self):
+    def calculate_average_year(self, observer):
         dic = {}
-        for x in self.Reader.get_line():
+        for x in observer.lines:
             for key, value in x.items():
                 if key == 'Year':
                     if key not in dic:
@@ -75,21 +86,20 @@ class AverageYear:
         self.averages.append(data)
 
     def plot_year(self):
-        # figure = plt.figure()
         plt.plot(self.years, self.averages)
-        print(self.years, self.averages)
         plt.show()
 
+    def update(self, observable):
+        self.average_year_data(self.calculate_average_year(observable))
 
 class AverageMonth:
-    def __init__(self, file):
-        self.Reader = Reader(file)
-        self.lines = []
+    def __init__(self):
+        self.data = []
 
-    def calculate_average_month(self):
+    def calculate_average_month(self, observer):
         dic = {}
 
-        for x in self.Reader.get_line():
+        for x in observer.lines:
             for key,value in x.items():
                 if key in ['Year', 'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']:
                     if key not in dic:
@@ -109,37 +119,33 @@ class AverageMonth:
         label = f'{int(y[0][0])} - {int(y[0][-1])}'
         data = y[1:]
        
-        # plt.legend(loc="upper left")
-        self.lines.append([x, data, label])
+        self.data.append([x, data, label])
         
     def plot_months(self):
-        for x in self.lines:
+        for x in self.data:
             plt.plot(x[0], x[1], label=x[2])
         plt.legend(loc='upper left')    
         plt.show()
 
+    def update(self, observable):
+        self.average_month_plot(self.calculate_average_month(observable))
 
 
 
 
 def main():
-    month =  AverageMonth('data/dSST.csv')
-    year = AverageYear('data/dSST.csv')
+    producer = Reader('data/dSST.csv')
+    monthConsumer = AverageMonth()
+    yearConsumer = AverageYear()
 
+    producer.add_observer(monthConsumer)
+    producer.add_observer(yearConsumer)
     while True:
         start = input("Enter yes or no to continue:")
         if start == 'no':
             break
-        elif start == 'month':
-            month.average_month_plot(month.calculate_average_month())
-            month.plot_months()
-        elif start == 'year':
-            year.average_year_data(year.calculate_average_year())
-            year.plot_year()
-    
+        if start == 'yes':
+            producer.get_line()
+            monthConsumer.plot_months()
+            yearConsumer.plot_year()
 main()
-
-
-
-
-
