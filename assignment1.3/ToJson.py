@@ -13,7 +13,7 @@ class CsvConverter:
     
         value = lc.getline(self.file, line).split(',')
         
-        if len( value) == 1:
+        if len(value) == 1:
             return json.dumps("")
         else:
             assert len(keys) == len(value)
