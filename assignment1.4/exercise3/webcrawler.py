@@ -24,7 +24,8 @@ class Crawler:
        
         self.pointer = -1
 
-    
+    def __iter__(self):
+        return self    
 
     def __next__(self):
         self.pointer += 1
