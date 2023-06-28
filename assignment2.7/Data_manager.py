@@ -8,13 +8,15 @@ class Data_manager:
 
     def split_data(self):
         trainingdata = self.df[self.df['timestamp'].dt.month <=6]
-        predictingdata = self.df[self.df['timestamp'].dt.month > 6]
-        return trainingdata, predictingdata
+        predictingdata_july = self.df[self.df['timestamp'].dt.month == 7]
+        predictingdata_august = self.df[self.df['timestamp'].dt.month == 8]
+        return trainingdata, predictingdata_july, predictingdata_august
     
     def df_to_csv(self, data, name):
         data.to_csv(f'data/{name}.csv')
 
 test = Data_manager('data/sensor.csv')
-training, predictiondata = test.split_data()
+training, predictiondata_july, predictingdata_august = test.split_data()
 test.df_to_csv(training, 'trainingdata')
-test.df_to_csv(predictiondata, 'predictiondata')
+test.df_to_csv(predictiondata_july, 'predictiondata_july')
+test.df_to_csv(predictingdata_august, 'predictingdata_august')
