@@ -3,8 +3,8 @@ class Data_manager:
     def __init__(self, data):
         # timestamp column is of type object needs to change to timestamp
         self.df = pd.read_csv(data)
-        self.df['timestamp'] = pd.to_datetime(self.df['timestamp'])
-
+        self.df = self.df['timestamp'] = pd.to_datetime(self.df['timestamp'])
+        print(self.df.dtypes)
 
     def split_data(self):
         trainingdata = self.df[self.df['timestamp'].dt.month <=6]

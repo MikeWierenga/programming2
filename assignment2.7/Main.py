@@ -11,6 +11,6 @@ def main():
     model = isolationforest.IsolationForestModel()
     model.train_model(X)
     load_model = model.load_model()
-    load_model.best_params_
+    print(load_model.best_params_)
         # terminal enter algorithm to be used 
 main()
