@@ -14,3 +14,6 @@ class Drawer:
         plt.plot(self.df[sensor], color='grey')
         plt.title(name)
         return plt
+    
+    def save_plot(self, plt, name):
+        plt.savefig(f'images/{name}.png')

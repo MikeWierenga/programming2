@@ -1,0 +1,6 @@
+{
+    "input": "new_data",
+    "output": "save_predictions",
+    "img": "images",
+    "sensors": ["sensor_00"]
+}
