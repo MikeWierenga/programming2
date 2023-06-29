@@ -20,7 +20,7 @@ class Data_transformation:
     def standardscaler(self):
         scaler = StandardScaler()
         self.x = scaler.fit_transform(self.x)
-
+        
     def outliers_fraction(self):
          normal_rows = self.df[df['machine_status']=='NORMAL']
          outliers_fraction = 1 - (len(normal_rows)/(len(self.df)))
