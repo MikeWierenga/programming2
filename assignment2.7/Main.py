@@ -34,13 +34,14 @@ def main():
 
         #make prediction
         predictions = load_model.predict(X)
+        
         log.write_to_logger('Received predictions')
         log.write_to_logger('Saving predictions')
         
         #drawing a sensor
         sensordrawer = drawer.Drawer(data_transform.df)
         for sensor  in sensors:
-            plot = sensordrawer.plot_sensor_anomalies(sensor, sensor)
+            plot = sensordrawer.plot_sensor_anomalies(sensor, sensor, predictions)
             sensordrawer.save_plot(plt=plot, name=sensor)
         log.write_to_logger('Saving image')
 
