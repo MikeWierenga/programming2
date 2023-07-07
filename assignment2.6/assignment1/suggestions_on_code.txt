@@ -1,0 +1,2 @@
+All the classes are in 1 file I would suggest splitting the classes so that they have there own file.
+This way you can test each class individually without running all the code.
