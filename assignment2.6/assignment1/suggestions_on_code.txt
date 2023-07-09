@@ -1,2 +1,10 @@
-All the classes are in 1 file I would suggest splitting the classes so that they have there own file.
-This way you can test each class individually without running all the code.
+Consumer.py:
+update method has a pass 
+there are no comments to explain the code
+Multiple classes in 1 file
+main.py
+load in the dSSt file with via a yaml file to not show the name of the actual file that you are loading in.
+
+
+Reader.py
+Multiple classes in 1 file
